@@ -3,10 +3,22 @@ import ReactQuill from 'react-quill';
 
 
 const Editor = () => {
-  const [text, setText] = useState('');
+  const [input, setInput] = useState({
+    title: '',
+    content: '',
+    id: ''
+  });
 
-  const changeHandler = input => {
-    setText(input);
+  const titleHandler = event => {
+    setInput({
+      title: event.target.value
+    })
+  }
+
+  const textHandler = text => {
+    setInput({
+      content: text
+    });
   }
 
   const modules = {
@@ -23,7 +35,8 @@ const Editor = () => {
 
   return (
     <div>
-      <ReactQuill value={text} onChange={changeHandler} modules={modules} formats={formats}/>
+      <input name='title' value={input.title} onChange={titleHandler}/>
+      <ReactQuill value={input.content} onChange={textHandler} modules={modules} formats={formats}/>
     </div>
   )
 }
