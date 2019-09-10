@@ -6,6 +6,7 @@ const SideBar = (props) => {
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [title, setTitle] = useState('');
 
+
   const titleHandler = event => {
     setTitle(event.target.value);
   }
@@ -37,7 +38,13 @@ const SideBar = (props) => {
           <button onClick={addNote}>Submit</button>
         </div>
       )}
-      {props.notes.map(item => <SideBarItem key={item.id} note={item} deleteNote={deleteNote} />)}
+      {props.notes.map(item => 
+        <SideBarItem 
+          key={item.id} 
+          note={item} 
+          deleteNote={deleteNote} 
+          selectNote={props.selectNote} />
+      )}
     </div>
   )
 }

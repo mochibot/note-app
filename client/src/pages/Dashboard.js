@@ -6,12 +6,11 @@ import Editor from '../components/Editor';
 const Dashboard = () => {
   const [notes, setNotes] = useState([]);
   const [selectedNote, setSelectedNote] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     firebase.firestore()
       .collection('notes')
+      .orderBy("lastEditedAt", "desc")
       .onSnapshot(response => {
         const notes = response.docs.map(item => {
           const data = item.data();
@@ -29,23 +28,53 @@ const Dashboard = () => {
       .add({
         title: title,
         content: '',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        lastEditedAt: firebase.firestore.FieldValue.serverTimestamp()
       })
       .then(response => {
-        const newNoteIndex = notes.indexOf(notes.find(item => item.id === response.id));
-        setSelectedNote(notes[newNoteIndex]);
-        setSelectedIndex(newNoteIndex);
+        return firebase.firestore()
+          .collection('notes')
+          .doc(response.id)
+          .get()
+          .then(snapshot => {
+            const newNote = snapshot.data();
+            newNote['id'] = response.id;
+            setSelectedNote(newNote);
+          })
+          .catch(error => {
+            console.log(error.message);
+          }) 
       })
       .catch(error => {
-        setError(error.message);
+        console.log(error.message);
+      })
+  }
+
+  const selectNote = (note) => {
+    setSelectedNote(note);
+  }
+
+  const updateNote = (id, updates) => {
+    firebase.firestore()
+      .collection('notes')
+      .doc(id)
+      .update({
+        title: updates.title,
+        content: updates.content,
+        lastEditedAt: firebase.firestore.FieldValue.serverTimestamp()
       })
   }
 
   return (
     <div>
       <div>
-        <SideBar notes={notes} addNote={addNote} />
-        <Editor />
+        <SideBar 
+          notes={notes} 
+          addNote={addNote}
+          selectNote={selectNote} />
+        <Editor 
+          selectedNote={selectedNote}
+          updateNote={updateNote} />
       </div>
     </div>
   )

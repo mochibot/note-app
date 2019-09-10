@@ -1,24 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 
+const Editor = (props) => {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
 
-const Editor = () => {
-  const [input, setInput] = useState({
-    title: '',
-    content: '',
-    id: ''
-  });
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (props.selectedNote) {
+      setError('');
+      setTitle(props.selectedNote.title);
+      setContent(props.selectedNote.content);
+    }
+  }, [props.selectedNote])
 
   const titleHandler = event => {
-    setInput({
-      title: event.target.value
-    })
+    setError('');
+    setTitle(event.target.value);
   }
 
   const textHandler = text => {
-    setInput({
-      content: text
-    });
+    setError('');
+    setContent(text);
   }
 
   const modules = {
@@ -33,10 +37,28 @@ const Editor = () => {
 
   const formats = ['header', 'bold', 'italic', 'underline', 'strike', 'blockquote', 'list', 'bullet', 'indent', 'link', 'image'];
 
+  const updateNote = (event) => {
+    event.preventDefault();
+    console.log(props.selectedNote);
+    if (!props.selectedNote) {
+      setError('No note was selected');
+    } else {
+      let updates = {
+        title: title,
+        content: content
+      }
+      props.updateNote(props.selectedNote.id, updates);
+    }
+  }
+
+  
+
   return (
     <div>
-      <input name='title' value={input.title} onChange={titleHandler}/>
-      <ReactQuill value={input.content} onChange={textHandler} modules={modules} formats={formats}/>
+      <input name='title' value={title} onChange={titleHandler}/>
+      <ReactQuill value={content} onChange={textHandler} modules={modules} formats={formats}/>
+      <button onClick={updateNote} >Save</button>
+      {error && <div>{error}</div>}
     </div>
   )
 }
