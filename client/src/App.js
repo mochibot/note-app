@@ -1,15 +1,20 @@
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, withRouter } from 'react-router-dom';
+import firebase from './config/firebase';
+import PrivateRoute from './utilities/PrivateRoute';
 import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 const App = () => {
+
   return (
-    <BrowserRouter>
-      <div className="App">
-        <Dashboard />
-      </div>
-    </BrowserRouter>
-  );
+    <div className="App">
+      <Route path='/login' component={Login} />
+      <Route path='/register' component={Register} />
+      <PrivateRoute path='/dashboard' component={Dashboard} />
+    </div>
+);
 }
 
-export default App;
+export default withRouter(App);

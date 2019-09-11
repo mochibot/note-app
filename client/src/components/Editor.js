@@ -12,6 +12,9 @@ const Editor = (props) => {
       setError('');
       setTitle(props.selectedNote.title);
       setContent(props.selectedNote.content);
+    } else {
+      setTitle('');
+      setContent('');
     }
   }, [props.selectedNote])
 
@@ -39,7 +42,6 @@ const Editor = (props) => {
 
   const updateNote = (event) => {
     event.preventDefault();
-    console.log(props.selectedNote);
     if (!props.selectedNote) {
       setError('No note was selected');
     } else {
@@ -50,8 +52,6 @@ const Editor = (props) => {
       props.updateNote(props.selectedNote.id, updates);
     }
   }
-
-  
 
   return (
     <div>

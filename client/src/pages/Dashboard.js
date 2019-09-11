@@ -65,16 +65,28 @@ const Dashboard = () => {
       })
   }
 
+  const deleteNote = (id) => {
+    firebase.firestore()
+      .collection('notes')
+      .doc(id)
+      .delete()
+      .then(() => {
+        setSelectedNote(null);
+      })
+  }
+
   return (
     <div>
       <div>
         <SideBar 
           notes={notes} 
           addNote={addNote}
-          selectNote={selectNote} />
+          selectNote={selectNote}
+          deleteNote={deleteNote} />
         <Editor 
+          notes={notes}
           selectedNote={selectedNote}
-          updateNote={updateNote} />
+          updateNote={updateNote}  />
       </div>
     </div>
   )
