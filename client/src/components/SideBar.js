@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Button, Form, Input } from 'antd';
 import SideBarItem from './SideBarItem';
 
 const SideBar = (props) => {
@@ -24,25 +25,26 @@ const SideBar = (props) => {
   const logout = event => {
     event.preventDefault();
     props.logout();
-    props.history.push('/login')
+    props.history.push('/')
   }
 
   return (
     <div>
-      <button onClick={logout}>Log out</button>
-      <button onClick={toggleAdd}>{isAddingNote ? 'Cancel' : 'Add note'}</button>
+      <Button onClick={logout}>Log out</Button>
+      <Button type="primary" onClick={toggleAdd}>{isAddingNote ? 'Cancel' : 'Add note'}</Button>
       {isAddingNote && (
-        <div>
-          <input name='title' value={title} onChange={titleHandler} />
-          <button onClick={addNote}>Submit</button>
-        </div>
+        <Form>
+          <Input name='title' value={title} onChange={titleHandler} />
+          <Button type="primary" onClick={addNote}>Submit</Button>
+        </Form>
       )}
       {props.notes.map(item => 
         <SideBarItem 
           key={item.id} 
           note={item} 
           deleteNote={props.deleteNote} 
-          selectNote={props.selectNote} />
+          selectNote={props.selectNote}
+          selectedNote={props.selectedNote} />
       )}
     </div>
   )

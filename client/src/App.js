@@ -9,11 +9,9 @@ const App = () => {
 
   return (
     <div className="App">
-        <Route path='/login' component={Login} />
+        <Route exact path='/' component={Login} />
         <Route path='/register' component={Register} />
-        <PrivateRoute
-          path='/dashboard'
-          component={Dashboard}/>
+        <PrivateRoute path='/dashboard' component={Dashboard} />
     </div>
 );
 }

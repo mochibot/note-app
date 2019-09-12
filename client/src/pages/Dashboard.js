@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Layout } from 'antd';
 import firebase from '../config/firebase';
 import SideBar from '../components/SideBar';
 import Editor from '../components/Editor';
@@ -81,18 +82,23 @@ const Dashboard = () => {
 
   return (
     <div>
-      <div>
-        <SideBar 
-          notes={notes} 
-          addNote={addNote}
-          selectNote={selectNote}
-          deleteNote={deleteNote} 
-          logout={logout} />
-        <Editor 
-          notes={notes}
-          selectedNote={selectedNote}
-          updateNote={updateNote}  />
-      </div>
+      <Layout>
+        <Layout.Sider style={{ background: '#fff'}} width={280}>
+          <SideBar 
+            notes={notes} 
+            addNote={addNote}
+            selectNote={selectNote}
+            selectedNote={selectedNote}
+            deleteNote={deleteNote} 
+            logout={logout} />
+        </Layout.Sider>
+        <Layout.Content>
+          <Editor 
+            notes={notes}
+            selectedNote={selectedNote}
+            updateNote={updateNote} />
+        </Layout.Content>
+      </Layout>
     </div>
   )
 }

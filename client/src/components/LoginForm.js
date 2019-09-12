@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import firebase from '../config/firebase';
+import { Form, Icon, Input, Button } from 'antd';
 
 const LoginForm = (props) => {
   const [input, setInput] = useState({
@@ -52,12 +53,23 @@ const LoginForm = (props) => {
   }
 
   return (
-    <form onSubmit={submitHandler}>
-      <input name='email' value={input.email} placeholder='Username' onChange={changeHandler} />
-      <input type='password' name='password' value={input.password} placeholder='Password' onChange={changeHandler} />
+    <Form onSubmit={submitHandler}>
+      <Input
+        prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        name='email' 
+        value={input.email} 
+        placeholder='Username' 
+        onChange={changeHandler} />
+      <Input 
+        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        type='password' 
+        name='password' 
+        value={input.password} 
+        placeholder='Password' 
+        onChange={changeHandler} />
       {error && <div>{error}</div>}
-      <button>Submit</button>
-    </form>
+      <Button type="primary" htmlType="submit">Submit</Button>
+    </Form>
   )
 }
 

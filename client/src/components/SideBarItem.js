@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, List } from 'antd';
 
 const SideBarItem = (props) => {
   
@@ -15,11 +16,13 @@ const SideBarItem = (props) => {
   const removeHTMLTags = str => str.replace(/<[^>]*>?/gm, '');
 
   return (
-    <div>
-      <div onClick={selectNote}>{props.note.title}</div>
-      <div>{removeHTMLTags(props.note.content).slice(0, 30) + '...'}</div>
-      <button onClick={deleteNote}>Delete</button>
-    </div>
+    <List.Item style={props.selectedNote && (props.selectedNote.id === props.note.id) ? {background: 'rgb(179, 201, 185)'} : {background: 'white'}}>
+      <List.Item.Meta 
+        onClick={selectNote}
+        title={props.note.title}
+        description={removeHTMLTags(props.note.content).slice(0, 20) + '...'} />
+      <Button type='danger' icon="delete" size='small' onClick={deleteNote} />
+    </List.Item>
   )
 }
 
