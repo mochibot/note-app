@@ -75,6 +75,10 @@ const Dashboard = () => {
       })
   }
 
+  const logout = () => {
+    firebase.auth().signOut();
+  }
+
   return (
     <div>
       <div>
@@ -82,7 +86,8 @@ const Dashboard = () => {
           notes={notes} 
           addNote={addNote}
           selectNote={selectNote}
-          deleteNote={deleteNote} />
+          deleteNote={deleteNote} 
+          logout={logout} />
         <Editor 
           notes={notes}
           selectedNote={selectedNote}

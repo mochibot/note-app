@@ -35,7 +35,6 @@ const RegisterForm = (props) => {
       firebase.auth()
         .createUserWithEmailAndPassword(input.email, input.password)
         .then(response => {
-          localStorage.setItem('authUser', response)
           return firebase.firestore().collection('users')
             .doc(response.user.uid)
             .set({
@@ -45,14 +44,13 @@ const RegisterForm = (props) => {
             })
         })
         .then(() => {
-          
           setInput({
             email: '',
             password: '',
             firstName: '',
             lastName: ''
           })
-          props.history.push('/dashboard')
+          props.history.push('/dashboard');
         })
         .catch(error => {
           setError(error.message)

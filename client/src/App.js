@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { Route, withRouter } from 'react-router-dom';
-import firebase from './config/firebase';
+import React from 'react';
+import { Route } from 'react-router-dom';
 import PrivateRoute from './utilities/PrivateRoute';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
@@ -10,11 +9,13 @@ const App = () => {
 
   return (
     <div className="App">
-      <Route path='/login' component={Login} />
-      <Route path='/register' component={Register} />
-      <PrivateRoute path='/dashboard' component={Dashboard} />
+        <Route path='/login' component={Login} />
+        <Route path='/register' component={Register} />
+        <PrivateRoute
+          path='/dashboard'
+          component={Dashboard}/>
     </div>
 );
 }
 
-export default withRouter(App);
+export default App;

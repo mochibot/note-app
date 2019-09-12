@@ -30,18 +30,24 @@ const LoginForm = (props) => {
   const submitHandler = event => {
     event.preventDefault();
     if (validateEntry()) {
-      firebase.auth().signInWithEmailAndPassword(input.email, input.password)
-          .then(response => {
-            
-            setInput({
-              email: '',
-              password: ''
-            })
-            props.history.push('/dashboard');
+      firebase.auth()
+        .signInWithEmailAndPassword(input.email, input.password)
+        .then(response => {
+          setInput({
+            email: '',
+            password: ''
           })
-          .catch(error => {
-            setError(error.message);
-          })
+        })
+        .then(() => {
+          return firebase.auth().onAuthStateChanged(response => {
+              if (response) {
+                props.history.push('/dashboard');
+              } 
+            }) 
+        })
+        .catch(error => {
+          setError(error.message);
+        })
     }
   }
 

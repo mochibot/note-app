@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import firebase from '../config/firebase';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
+  const [authUser, setAuthUser] = useState(null);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(response => {
+      if (response) {
+        setAuthUser(response);
+      } else {
+        setAuthUser(null);
+      }
+    }) 
+  }, [])
+
   return (
     <Route 
       {...rest}
       render={props => 
-        localStorage.getItem('authUser') ?
-          <Component {...props} /> : <Redirect to='/login' /> 
-    }/>
+        !authUser ?  <Redirect to='/login' /> : <Component {...props} />} />
   )
 }
 
